@@ -1,0 +1,79 @@
+<script>
+
+    $(function(){
+        var username=getCookie("user");
+        if(username!=null&&username!=""){
+            $("#login1").text("登录成功，欢迎你"+username);
+            $("#login22").show();
+            $("#login11").hide();
+
+        }else{
+            $("#login22").hide();
+            $("#login11").show();
+        }
+    });
+    function tuichu(){
+        delCookie("user");
+        window.location.reload();
+
+    }
+    function delCookie(name)
+    {
+        var exp = new Date();
+        exp.setTime(exp.getTime() - 1);
+        var cval=getCookie(name);
+        if(cval!=null)
+            document.cookie= name + "=; expire="+exp.toGMTString()+"; path=/";
+    }
+    function getCookie(name)
+    {
+        var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+        if(arr=document.cookie.match(reg))
+            return unescape(arr[2]);
+        else
+            return null;
+    }
+    function userlogin(){
+        var username = $("#username").val();
+        var password = $("#password").val();
+        if(username==""){
+            alert("用户名不能为空!");
+            return false;
+        }
+        if(password==""){
+            alert("密码不能为空!");
+            return false;
+        }
+        var mul = {
+            'username':username,
+            'password':password
+        }
+        $.post("webs/userLogin.action",mul,function(result){
+            if(result=="1"){
+                var canshu1=encodeURIComponent(getCookie("__VIEWSTATE"));
+                var canshu2=encodeURIComponent(getCookie("__EVENTVALIDATION"));
+                var canshu3=encodeURIComponent("RbntRecno");
+                var canshu4=encodeURIComponent("登+录");
+                var abccc="http://211.68.161.66/NTRdrLogin.aspx?__VIEWSTATE="+canshu1+"&txtName="+username+"&txtPassWord="+password+"&Logintype="+canshu3+"&BtnLogin="+canshu4+"&__EVENTVALIDATION="+canshu2;
+                $("#loginIframeUrl").attr('src',abccc);
+                alert("登录成功!");
+                window.location.reload();
+            }else if(result=="2"){
+                alert("请耐心等待管理员审核!");
+                return false;
+            }else if(result=="3"){
+                alert("对不起,该用户已过期,请联系管理员!");
+                return false;
+            }else if(result=="4"){
+                alert("对不起,用户名错误,请重新输入!");
+                return false;
+            }else{
+                alert("对不起,密码错误,请重新输入!");
+                return false;
+            }
+        })
+    }
+    function register(){
+        window.location.href="webs/register.jsp";
+    }
+</script>
