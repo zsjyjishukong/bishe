@@ -24,5 +24,6 @@ export default {
   #text{
     margin-top: 40px;
     color: #898989;
+    font-size: 20px;
   }
 </style>
