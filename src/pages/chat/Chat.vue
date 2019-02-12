@@ -3,15 +3,15 @@
     <div id="swap">
       <div class="topBox">
         <div class="login fr" id="login11">
-          <label>用户名：</label> <input type="text" class="txt" value="" id="username">
-          <label>密码：</label><input type="password" class="txt" value="" id="password">
-          <input type="button" value="登录" class="btn" @onclick="userlogin()">
+          <label>用户名：</label> <input type="text" class="txt" v-model="username" id="username">
+          <label>密码：</label><input type="password" class="txt" v-model="password" id="password">
+          <input type="button" value="登录" class="btn" @click="userlogin">
         </div>
         <div class="login fr" id="login22" style="display:none">
           <p>
             <font style="color:#F7F7F7;" id="login1"></font>
             <a style="color:#F7F7F7;" target="_blank" href="http://211.68.161.66/MylibIndex.aspx">我的 OPAC</a>
-            <a href="javascript:void(0)" @onclick="tuichu()"><font style="color:#F7F7F7;">退出</font></a></p>
+            <a href="javascript:void(0)" @click="tuichu()"><font style="color:#F7F7F7;">退出</font></a></p>
         </div>
         <iframe src="" id="loginIframeUrl" style="display:none;"></iframe>
         <div class="nav">
@@ -21,7 +21,7 @@
             <li><a href="http://211.68.161.77/zyzxh/index.asp" target="_blank">志愿者协会</a></li>
             <li><a href="http://lib.hebiace.edu.cn/webs/list/notice/87.html" target="_blank">本馆概况</a></li>
             <li><a href="http://yc.hebiace.edu.cn/" target="_blank">远程访问</a></li>
-            <li><a href="http:\\211.68.161.77" target="_blank">原版网站</a></li>
+            <li><a href="http://211.68.161.77" target="_blank">原版网站</a></li>
           </ul>
         </div>
       </div>
@@ -94,7 +94,9 @@ export default {
       cookie: {},
       studentShow: false,
       adminShow: false,
-      visitorShow: true
+      visitorShow: true,
+      username: '',
+      password: ''
     }
   },
   methods: {
@@ -104,6 +106,9 @@ export default {
         let aCookieArr = aCookie.split('=')
         this.cookie[aCookieArr[0].trim()] = aCookieArr[1]
       }
+    },
+    userlogin: function () {
+      this.$http.post()
     }
   },
   mounted: function () {

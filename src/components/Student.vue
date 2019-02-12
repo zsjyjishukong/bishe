@@ -33,13 +33,7 @@ export default {
   data () {
     return {
       user: document.cookie,
-      chat: [
-        // {
-        //   from: '齐昊宇',
-        //   isLeft: false,
-        //   chatBody: 'i按实际的佛i骄傲松动i金佛阿斯哦大家哦啊啊甲方收到'
-        // }
-      ],
+      chat: [],
       newChat: ''
     }
   },
@@ -56,7 +50,6 @@ export default {
         isLeft: false,
         chatBody: newChat
       })
-      console.log(this.user)
       self.update()
       this.newChat = ''
       let url = 'http://192.168.31.174:7777/index'
@@ -80,6 +73,7 @@ export default {
     update: function () {
       let div = document.getElementsByClassName('chat-body')[0]
       this.$nextTick(function () {
+        // eslint-disable-next-line
         let timer = setInterval(function () {
           if (div.scrollTop < div.scrollHeight) {
             div.scrollTop += 1
