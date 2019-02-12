@@ -17,6 +17,7 @@ export default {
   #visitor-page{
     height: 100%;
     text-align: center;
+    border: 1px solid #aeaeae;
   }
   #visitor-page-body{
     margin-top: 10%;

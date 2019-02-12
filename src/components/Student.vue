@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="new-chat">
-      <textarea type="text" placeholder="请详细描述你的问题" id="new-chat-input" v-model="newChat"></textarea>
+      <textarea type="text" placeholder="请详细描述你的问题" id="new-chat-input" v-model="newChat" @keyup.enter="send"></textarea>
       <button class="send" @click="send">
         发送
       </button>
@@ -30,9 +30,16 @@
 <script>
 export default {
   name: 'Student',
+  props: {
+    'url': {
+      type: String
+    },
+    'user': {
+      type: String
+    }
+  },
   data () {
     return {
-      user: document.cookie,
       chat: [],
       newChat: ''
     }
@@ -52,8 +59,7 @@ export default {
       })
       self.update()
       this.newChat = ''
-      let url = 'http://192.168.31.174:7777/index'
-      this.$http.post(url, self.$qs.stringify({question: newChat}))
+      this.$http.post(self.url + 'answer', self.$qs.stringify({question: newChat, username: self.user}))
         .then(function (response) {
           console.log(response.data)
           let chatBody = response.data.msg
@@ -75,12 +81,12 @@ export default {
       this.$nextTick(function () {
         // eslint-disable-next-line
         let timer = setInterval(function () {
-          if (div.scrollTop < div.scrollHeight) {
+          if (div.scrollTop < div.scrollHeight - div.offsetHeight) {
             div.scrollTop += 1
           } else {
-            timer = undefined
+            clearInterval(timer)
           }
-        }, 10)
+        }, 1000)
       })
     }
   }

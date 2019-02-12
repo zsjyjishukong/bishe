@@ -2,12 +2,12 @@
   <div id="page">
     <div id="swap">
       <div class="topBox">
-        <div class="login fr" id="login11">
+        <div class="login fr" id="login11" :style="login11">
           <label>用户名：</label> <input type="text" class="txt" v-model="username" id="username">
           <label>密码：</label><input type="password" class="txt" v-model="password" id="password">
           <input type="button" value="登录" class="btn" @click="userlogin">
         </div>
-        <div class="login fr" id="login22" style="display:none">
+        <div class="login fr" id="login22" :style="login22">
           <p>
             <font style="color:#F7F7F7;" id="login1"></font>
             <a style="color:#F7F7F7;" target="_blank" href="http://211.68.161.66/MylibIndex.aspx">我的 OPAC</a>
@@ -52,9 +52,9 @@
             </div>
           </div>
         <!--</div>-->
-        <div class="html-body-body subLib model fr rcBox">
-          <Student v-if="studentShow"></Student>
-          <Admin v-if="adminShow"></Admin>
+        <div class="html-body-body subLib fr rcBox" style="margin-top: 10px;">
+          <Student v-if="studentShow" v-bind:url="host" v-bind:user="cookie.user"></Student>
+          <Admin v-if="adminShow" :layer="layer" :url="host"></Admin>
           <Visitor v-if="visitorShow"></Visitor>
         </div>
       </div>
@@ -72,7 +72,7 @@
           <li style="margin-right:0;"><a href="http://www.lib.tongji.edu.cn/oldweb/JZQBW/index.html"><img src="http://lib.hebiace.edu.cn/uploadfile/20140320/jianzhuqingbao.jpg" width="124px" height="40px"></a></li>
         </ul>
         <div class="foot" align="center">@2013 河北建筑工程学院图书馆  email：hebiace_xxb@163.com  电话：0313-4187858
-          <br>您是第 <em><span id="total">2876668</span></em> 位访问者</div>
+          <br>您是第 <em><span id="total">{{peopleNumber}}</span></em> 位访问者</div>
       </ul>
     </div>
   </div>
@@ -91,12 +91,18 @@ export default {
   },
   data () {
     return {
+      host: 'http://192.168.0.102:7777/',
       cookie: {},
       studentShow: false,
       adminShow: false,
       visitorShow: true,
       username: '',
-      password: ''
+      password: '',
+      login11: {},
+      login22: {display: 'none'},
+      peopleNumber: 20000,
+      layer: 0,
+      user: ''
     }
   },
   methods: {
@@ -105,6 +111,9 @@ export default {
       for (let aCookie of cookieArr) {
         let aCookieArr = aCookie.split('=')
         this.cookie[aCookieArr[0].trim()] = aCookieArr[1]
+        if (aCookieArr[0] === 'user') {
+          this.user = aCookieArr[1]
+        }
       }
     },
     userlogin: function () {
@@ -113,9 +122,28 @@ export default {
   },
   mounted: function () {
     let cookie = document.cookie
+    let self = this
     this.cookieToObj(cookie)
+    document.cookie = 'user=20153320131'
     if (this.cookie.user !== undefined) {
-      this.studentShow = true
+      this.$http.get(this.host + 'login?username=' + this.cookie.user)
+        .then(function (response) {
+          let layer = response.data.customer_type
+          if (layer === 0) { // 0普通用户
+            self.studentShow = true
+            self.visitorShow = false
+          } else if (layer === 1 || layer === 2) { // 1超级管理 2普通管理
+            self.visitorShow = false
+            self.adminShow = true
+            self.layer = layer
+          }
+        })
+        // eslint-disable-next-line
+        .catch(function (err) {
+          self.$message.error('出错了')
+        })
+    } else {
+      this.visitorShow = true
     }
   }
 }
@@ -150,7 +178,7 @@ export default {
   .html-body-body{
     float: left;
     width: 706px;
-    height: 70vh;
+    height: 808px;
   }
 table{border-spacing:0px; border-collapse:collapse;width:100%; border:0px;}
 ul,ol{list-style-type:none;}
@@ -168,13 +196,7 @@ img{border:0px;}
 .topBox .login{position:absolute;top:0;right:10px;}
 .topBox .nav{position:absolute;bottom:0;left:510px;}
 .topBox .nav li a{height:32px;line-height:32px;}
-.topBox .nav li a.cur{background-position:left -18px;}
 .model{border:1px solid #cbcbcb;margin-top:10px;}
-.model .rc{width:4px;height:4px;}
-.model .lt{background-position:-83px top;}
-.model .rt{background-position:-87px top;}
-.model .lb{background-position:-83px -4px;}
-.model .rb{background-position:-87px -4px;}
 .model .tit{height:33px;line-height:33px;background:url(../../assets/titBg.gif) repeat-x;padding:0 10px;overflow:hidden;}
 .menu{width:238px;background:url(../../assets/menu.jpg) no-repeat left bottom;padding-bottom:280px;}
 .menu .tit{border-bottom:3px solid #297bce;font-size:14px;font-weight:bold;color:#0f4c90;}
@@ -191,7 +213,6 @@ img{border:0px;}
 .navMenu > li:nth-of-type(1)> a { border-top: 1px solid transparent; }
 .navMenu > li:last-child > a { border-bottom: 1px solid transparent; }
 .navMenu>li>a>b {  width:13px;height:13px;background-position:-97px top;margin:12px 10px 0 0; }
-.navMenu li a .arrow.open:before { float: right; margin-top: 1px; margin-right: 15px; display: inline;  height: auto; font-size: 12px; text-shadow: none;}
 .navMenu>li>a.active, .navMenu>li>a:hover { background: #fafafa; }
 .navMenu>li>ul.sub-menu li { background: none; margin: 0px; padding: 0px; }
 .navMenu>li>ul.sub-menu li>a { display: block; padding-left: 20px; color: #ABB1B7; clear: both; }
@@ -200,11 +221,6 @@ img{border:0px;}
 .fr{float:right;}
 .fl{float:left;}
 .rcBox{position:relative; zoom:1;}
-.rcBox .rc{position:absolute;}
-.rcBox .lt{left:-1px; top:-1px;}
-.rcBox .rt{right:-1px; top:-1px;}
-.rcBox .lb{left:-1px; bottom:-1px;}
-.rcBox .rb{right:-1px; bottom:-1px;}
 .icons{float:left; font-size:0px; line-height:0px; overflow:hidden; display:inline; background:url(../../assets/icons.gif) no-repeat;}
 .link{padding:10px 0;background:#efefef;width: 960px;margin:10px auto 0 auto;}
 .link li{float:left;margin-right:10px;}
