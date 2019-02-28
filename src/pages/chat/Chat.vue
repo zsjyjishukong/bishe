@@ -1,79 +1,67 @@
 <template>
   <div id="page">
-    <div id="swap">
-      <div class="topBox">
-        <div class="login fr" id="login11" :style="login11">
-          <label>用户名：</label> <input type="text" class="txt" v-model="username" id="username">
-          <label>密码：</label><input type="password" class="txt" v-model="password" id="password">
-          <input type="button" value="登录" class="btn" @click="userlogin">
-        </div>
-        <div class="login fr" id="login22" :style="login22">
-          <p>
-            <font style="color:#F7F7F7;" id="login1"></font>
-            <a style="color:#F7F7F7;" target="_blank" href="http://211.68.161.66/MylibIndex.aspx">我的 OPAC</a>
-            <a href="javascript:void(0)" @click="tuichu()"><font style="color:#F7F7F7;">退出</font></a></p>
-        </div>
-        <iframe src="" id="loginIframeUrl" style="display:none;"></iframe>
-        <div class="nav">
-          <ul class="clearfix">
-            <li><a href="http://211.68.161.77/dzb/default.asp" target="_blank">党建工作</a></li>
-            <li><a href="http://wwt.hebiace.edu.cn/col8/col23/col2842/index.htm1?Modalid=6045" target="_blank">信息管理系</a></li>
-            <li><a href="http://211.68.161.77/zyzxh/index.asp" target="_blank">志愿者协会</a></li>
-            <li><a href="http://lib.hebiace.edu.cn/webs/list/notice/87.html" target="_blank">本馆概况</a></li>
-            <li><a href="http://yc.hebiace.edu.cn/" target="_blank">远程访问</a></li>
-            <li><a href="http://211.68.161.77" target="_blank">原版网站</a></li>
-          </ul>
-        </div>
-      </div>
-      <div id="html-body">
-        <!--<div class="html-body-nav">-->
-          <div class="menu model fl rcBox">
-            <div class="tit">栏目导航</div>
-            <!-- 二级导航 -->
-            <div class="navMenubox">
-              <div id="slimtest1">
-                <ul class="navMenu">
-                  <li class="on">
-                  </li><li><a title="参考咨询" target="_blank" href="webs/service.jsp" class="afinve"><b class="icons"></b><span class="">参考咨询</span></a></li>
-                  <li class="on">
-                  </li><li><a title="实时咨询" href="javascript:void(0)" class="afinve on"><b class="icons"></b><span class="">实时咨询</span></a></li>
-                  <li class="on">
-                  </li><li><a title="RSS订阅" href="webs/list/notice/60.html" class="afinve"><b class="icons"></b><span class="">RSS订阅</span></a></li>
-                  <li class="on">
-                  </li><li><a title="代检代查" href="webs/list/notice/61.html" class="afinve"><b class="icons"></b><span class="">代检代查</span></a></li>
-                  <li class="on">
-                  </li><li><a title="定题服务" href="webs/list/notice/62.html" class="afinve"><b class="icons"></b><span class="">定题服务</span></a></li>
-                  <li class="on">
-                  </li><li><a title="信息推送" href="webs/list/notice/63.html" class="afinve"><b class="icons"></b><span class="">信息推送</span></a></li>
-                  <li class="on">
-                  </li><li><a title="服务指南" target="_blank" href="webs/list/notice/77.html" class="afinve"><b class="icons"></b><span class="">服务指南</span></a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        <!--</div>-->
-        <div class="html-body-body subLib fr rcBox" style="margin-top: 10px;">
-          <Student v-if="studentShow" v-bind:url="host" v-bind:user="cookie.user"></Student>
-          <Admin v-if="adminShow" :layer="layer" :url="host"></Admin>
-          <Visitor v-if="visitorShow"></Visitor>
-        </div>
+    <div class="top">
+      <a href="/" class="logo"></a>
+      <div class="znSeaarch">
+        <form action="/search.jspx" method="POST" target="_blank">
+          <input type="text" name="q" class="znSeaarch_input">
+          <input name="input2" value="搜索" type="submit" class="znSeaarch_btn">
+        </form>
       </div>
     </div>
-    <div class="clear"></div>
-    <div class="link">
-      <ul class="clearfix">
-        <ul class="clearfix">
-          <li><a href="http://www.lib.tju.edu.cn"><img src="http://lib.hebiace.edu.cn/uploadfile/20140320/153141.jpg" width="124px" height="40px"></a></li>
-          <li><a href="http://xwzx2016.sdjzu.edu.cn/tsg/"><img src="http://lib.hebiace.edu.cn/uploadfile/20140320/153335.jpg" width="124px" height="40px"></a></li>
-          <li><a href="http://www.lib.tongji.edu.cn/"><img src="http://lib.hebiace.edu.cn/uploadfile/20140320/153509.jpg" width="124px" height="40px"></a></li>
-          <li><a href="http://202.202.12.15/newversion/index.htm"><img src="http://lib.hebiace.edu.cn/uploadfile/20140320/153615.jpg" width="124px" height="40px"></a></li>
-          <li><a href="http://lib.tcu.edu.cn/"><img src="http://lib.hebiace.edu.cn/uploadfile/20140320/tianjinchengda.jpg" width="124px" height="40px"></a></li>
-          <li><a href="http://lib.bucea.edu.cn/"><img src="http://lib.hebiace.edu.cn/uploadfile/20140320/beijingjianzhu.jpg" width="124px" height="40px"></a></li>
-          <li style="margin-right:0;"><a href="http://www.lib.tongji.edu.cn/oldweb/JZQBW/index.html"><img src="http://lib.hebiace.edu.cn/uploadfile/20140320/jianzhuqingbao.jpg" width="124px" height="40px"></a></li>
-        </ul>
-        <div class="foot" align="center">@2013 河北建筑工程学院图书馆  email：hebiace_xxb@163.com  电话：0313-4187858
-          <br>您是第 <em><span id="total">{{peopleNumber}}</span></em> 位访问者</div>
+    <div class="menuIndex">
+      <ul>
+        <li class="on"><a href="/">首页</a></li>
+        <li><a href="/node/453.jspx">党建工作</a></li>
+        <li><a href="http://wwt.hebiace.edu.cn/col8/col23/col2842/index.htm1?Modalid=6045" target="_blank">信息管理系</a></li>
+        <li><a href="http://211.68.161.78:8080/node/540.jspx" target="_blank">志愿者协会</a></li>
+        <li><a href="/node/456.jspx">馆员之窗</a></li>
+        <li><a href="http://211.68.161.66/NTRdrLogin.aspx" target="_blank">我的Lib</a></li>
+        <li><a href="http://yc.hebiace.edu.cn:2048/login" target="_blank">远程访问</a></li>
       </ul>
+    </div>
+    <div class="banner"></div>
+    <div class="wrap">
+      <div class="content_page">
+        <!--------page_left---------->
+        <div class="menu">
+          <a href="/"><p class="menu_tit">咨询台</p></a>
+          <ul>
+            <li><a href="http://211.68.161.78:8080/node/505.jspx" class="">常见问题</a></li>
+            <li><a href="/node/488.jspx" class="on">实时咨询</a></li>
+            <li><a href="/node/488.jspx" class="">微信平台</a></li>
+            <li><a href="http://lib.hebiace.edu.cn/webs/service.jsp" class="">参考咨询</a></li>
+            <li><a href="/node/490.jspx" class="">定题服务</a></li>
+            <li><a href="/node/491.jspx" class="">信息推送</a></li>
+            <li><a href="/node/492.jspx" class="">馆长信箱</a></li>
+          </ul>
+        </div>
+        <!--------page_left finished---------->
+        <!--------page_right---------->
+        <div class="page_right">
+          <div class="location">
+            <p class="tit">
+              <a href="/">首页</a>
+              <span>-</span><a href="/node/487.jspx">咨询台</a>
+              <span>-</span><a href="/node/488.jspx">微信平台</a>
+            </p>
+            <div class="clear"></div>
+          </div>
+          <div class="art">
+            <Student v-if="studentShow" v-bind:url="host" v-bind:user="cookie.user"></Student>
+            <Admin v-if="adminShow" :layer="layer" :url="host"></Admin>
+            <Visitor v-if="visitorShow"></Visitor>
+          </div>
+          <div class="clear"></div>
+        </div>
+        <!--------page_right finished---------->
+        <div class="clear"></div>
+      </div>
+      <div class="footer">
+        <p>河北建筑工程学院图书馆  email：hebiace_xxb@163.com  电话：0313-4187858 <br>
+          总访问量：<font>2874948</font>
+          &nbsp;&nbsp;今日访问量：<span class="span3">250</span></p>
+      </div>
     </div>
   </div>
 </template>
@@ -151,81 +139,125 @@ export default {
 
 <style scoped>
 #page{
-  background: url("../../assets/bg.jpg") repeat-x;
   height: 100vh;
   font:12px/1.5 宋体, Arial, Helvetica, sans-serif; color:#000;
+  background:url(../../assets/body_bg.png) repeat-x #e6e6e6;
 }
-  #swap{
-    width: 960px;
-    background: #fff;
-    margin: 0 auto;
-    padding: 0 10px;
-  }
-  #top->img{
-    width: 960px;
-    height: 100%;
-  }
-  #html-body{
-    margin: 10px 0 0 0;
-    background: #fff;
-    overflow: hidden;
-  }
-  .html-body-nav .item{
-    border-bottom: 1px solid #cbcbcb;
-    padding: 17px 15px;
-    color: #ABB1B7;
-  }
-  .html-body-body{
-    float: left;
-    width: 706px;
-    height: 808px;
-  }
-table{border-spacing:0px; border-collapse:collapse;width:100%; border:0px;}
-ul,ol{list-style-type:none;}
-input,select,textarea{vertical-align:middle; font:12px/1.5 宋体, Arial, Helvetica, sans-serif; color:#000;}
-a{color:#5b5b5b; text-decoration:none;}
-a:hover{color:#a80000;}
-em{font-style:normal; color:#000;}
-img{border:0px;}
-.nav li{float:left;margin-left:5px;display:inline;}
-.nav li a{display:block;width:90px;height:50px;line-height:50px;text-align:center;font-size:14px;font-weight:bold;color:#f7f7f7;}
-.login{margin-top:10px;height:32px;line-height:32px;border-left:1px solid #fff;padding-left:10px;}
-.login label{color:#e8f5ff;}
-.login .txt{width:98px;height:17px;border:1px solid #084980;}
-.topBox{height:125px;background:url(../../assets/topBg.jpg) no-repeat;position:relative;}
-.topBox .login{position:absolute;top:0;right:10px;}
-.topBox .nav{position:absolute;bottom:0;left:510px;}
-.topBox .nav li a{height:32px;line-height:32px;}
-.model{border:1px solid #cbcbcb;margin-top:10px;}
-.model .tit{height:33px;line-height:33px;background:url(../../assets/titBg.gif) repeat-x;padding:0 10px;overflow:hidden;}
-.menu{width:238px;background:url(../../assets/menu.jpg) no-repeat left bottom;padding-bottom:280px;}
-.menu .tit{border-bottom:3px solid #297bce;font-size:14px;font-weight:bold;color:#0f4c90;}
-.menu li b{ width:13px;height:13px;background-position:-97px top;margin:12px 10px 0 0;}
-.menu li.cur b{background-position:-114px top;}
-.menu li.cur a{font-weight:bold;color:#f96900;}
-/* 内页左侧导航 */
-/* navMenu */
-.navMenubox { width: 100%; height: 500px; margin: 0 auto; overflow: hidden; }
-.navMenu{padding-inline-start: 0; margin-block-start: 0;}
-.navMenu> li { line-height: 38px; border-bottom: 1px solid #e5e5e5; padding-left: 10px;  }
-.navMenu>li>a { display: block; overflow: hidden; padding-left: 0px; line-height: 40px; color: #ABB1B7; transition: all .3s; position: relative; text-decoration: none; }
-.navMenu>li>a.on span{ font-weight: bold; color: #F30;}
-.navMenu > li:nth-of-type(1)> a { border-top: 1px solid transparent; }
-.navMenu > li:last-child > a { border-bottom: 1px solid transparent; }
-.navMenu>li>a>b {  width:13px;height:13px;background-position:-97px top;margin:12px 10px 0 0; }
-.navMenu>li>a.active, .navMenu>li>a:hover { background: #fafafa; }
-.navMenu>li>ul.sub-menu li { background: none; margin: 0px; padding: 0px; }
-.navMenu>li>ul.sub-menu li>a { display: block; padding-left: 20px; color: #ABB1B7; clear: both; }
-.navMenu>li>ul.sub-menu li>a.active, .navMenu>li>ul.sub-menu li>a:hover, .navMenu>li>ul.sub-menu>li.active >a { color: #F30; }
-.sub-menu li:last-child{ border-bottom: none;}
-.fr{float:right;}
-.fl{float:left;}
-.rcBox{position:relative; zoom:1;}
-.icons{float:left; font-size:0px; line-height:0px; overflow:hidden; display:inline; background:url(../../assets/icons.gif) no-repeat;}
-.link{padding:10px 0;background:#efefef;width: 960px;margin:10px auto 0 auto;}
-.link li{float:left;margin-right:10px;}
-.clearfix{overflow:hidden; zoom:1;padding-left: 10px;}
-.clear{clear:both; height:0px; font-size:0px; line-height:0px; overflow:hidden;}
-.foot{padding:20px 0;color:#808080;line-height:20px;}
-.foot em{color:#d24b39;}
+ol,ul { list-style:none; margin:0;padding:0;}
+a { color:#444; text-decoration:none; }
+a:hover{ color:#dd1a00; }
+img { border:0;  vertical-align:middle;}
+table { border-collapse:collapse; border-spacing:0; }
+.clear { clear:both; font-size:0; height:0; line-height:0; overflow:hidden;}
+p{margin:0; padding:0;}
+
+.wrap{ width:972px; padding:0 14px; margin:0 auto; background:url(../../assets/bottom.jpg) left bottom no-repeat #fff;}
+h2{ font-size:12px; font: bold 12px "Microsoft YaHei",微软雅黑;}
+.title2 span{ /*padding-left:10px;*/ width:190px; display:block; float:left;  font-family:"Microsoft YaHei"; font-size:14px; line-height:32px; text-align:center; font-weight:bold; color:#fff;}
+/*top*/
+.top{ width:1000px; margin:0 auto; height:110px; background:url(../../assets/logor.jpg) right bottom no-repeat;}
+.logo{ float:left; display:block; width:500px; height:110px;  background:url(../../assets/logo_hbjz.png) left center no-repeat;}
+
+.znSeaarch{ float:right; width:307px; height:30px; margin-top:55px;}
+.znSeaarch_input{ display:block; float:left; width:215px; height:30px; line-height:30px; background:url(../../assets/znSearchInput.jpg); border:none; margin:0px; padding:0px; padding-left:37px;}
+.znSeaarch_btn{ display:block; float:right; width:51px; height:30px; color:#fff; font-weight:bold; border:none; background:url(../../assets/znSearchBtn.jpg); border:none; cursor:pointer;}
+/*menuIndex*/
+.menuIndex{ width:1006px; height:41px; margin:0 auto; background:url(../../assets/navbg.jpg) left top no-repeat;}
+.menuIndex ul{ width:990px; margin:0 auto;}
+.menuIndex ul li{ height:33px; font:14px/41px "Microsoft YaHei",微软雅黑; float:left; width:110px; text-align:center;}
+.menuIndex ul li a{ display:block; width:80px;height:35px; line-height:35px; color:#fff; margin:0 auto;}
+.menuIndex ul a:hover { /*background:url(../images/menu_hover.png) no-repeat bottom center;*/ height:33px; border-bottom:3px solid #79b5f3; color:#fff;}
+
+/*****newsList*****/
+.content_page{ width:100%;  margin:0 auto; padding-top:12px;}
+
+.menu{float:left; width:185px;min-height:640px; border:1px #eee solid;}
+.menu_tit{ text-align:center; line-height:45px; height:45px; color:#fff; background:#297bcd; border-bottom:1px dotted #c7c7c7; font-size:22px; font-family:'Microsoft Yahei',Tahoma, Helvetica, Arial, sans-serif; letter-spacing:3px; border-radius:5px 5px 0px 0px;-webkit-border-radius:5px 5px 0px 0px;-moz-border-radius:5px 5px 0px 0px; -o-border-radius:5px 5px 0px 0px;}
+.menu ul li{ border-bottom:1px dashed #c5c5c5}
+.menu ul li a{ display:block; line-height:40px;  /*border-left:2px solid #4d4d4d;*/ text-align:center; font-size:14px; font-family:'Microsoft Yahei',Tahoma, Helvetica, Arial, sans-serif; letter-spacing:3px; font-weight:300; color:#333; }
+.menu ul li a:hover, .menu ul li a.on{  color:#d11933; /*border-left-color:#d11933;*/}
+
+.page_right{ float:right; width:770px; border:1px solid #eee; overflow:hidden;}
+.location{ height:16px; margin:0px 0px 5px 0px; line-height:16px;}
+.location_ny{ margin-left:10px;}
+.location .tit{ display:block; width:755px; background:#fdfdfd; padding-right:10px; line-height:30px; float:left; margin:10px 15px; border-bottom:1px dotted #085483;}
+.location .tit span{ padding:5px;}
+
+.art{ padding:15px;margin-top: 20px;}
+
+.banner{ width:1002px; height:201px; background:url(../../assets/banner.png) left top no-repeat; margin:0 auto; margin-top:10px;}
+/* 2018 12 24*/
+.zxt{ width:360px; margin-top:30px;}
+.zxt ul{padding-top:20px;}
+.zxt ul li{
+  width:151px; height:57px;
+  float:left;
+  margin-left:20px;
+  margin-bottom:12px;
+}
+
+.book_tit span{ float:left; width:84px; text-align:center; color:#fff; font-family:"Microsoft Yahei"; font-size:14px; line-height:20px;}
+
+.tit_hstj{
+  width:50px; height:130px;
+  float:left;
+}
+.tit_hstj p{
+  width:16px;
+  font-size:16px;
+  color:#fff;
+  line-height:24px;
+  margin-left:17px;
+  margin-top: 15px;
+}
+/*footer*/
+.footer{ height:46px; line-height:20px; padding-top:10px;  text-align:center; margin-bottom:10px; overflow:hidden;}
+
+.bottom{ width:1000px; margin:0 auto; height:10px; overflow:hidden; background:url(../../assets/bottom.jpg) no-repeat top center;}
+.ladyScroll .scrollWrap{width:850px; margin-left:25px; overflow:hidden;position:absolute;}
+.ladyScroll  dl{float:left;width:90px; height:140px; text-align:center;position:relative; margin-right:21px; overflow:hidden;}
+.ladyScroll  span{display:block;width:88px;height:20px;position:absolute;left:0px;top:108px;filter:alpha(opacity=80);opacity:0.80; overflow:hidden; text-overflow:ellipsis; -o-text-overflow:ellipsis; white-space:nowrap;}
+.ladyScroll  dt{margin:0 auto;width:298px; height:110px; overflow:hidden;}
+.ladyScroll  img{display:block;width:88px;height:108px; border:1px solid #d7d7d7;}
+.ladyScroll  dd{width:88px; height:20px; line-height:20px;font-size:12px;color:#fff;text-align:center;position:absolute;left:0px;top:120px; overflow:hidden; text-overflow:ellipsis; -o-text-overflow:ellipsis; white-space:nowrap;}
+.ladyScroll  dd a{   }
+.ladyScroll  dd a:hover{  }
+.ladyScroll dl:hover span{  }
+
+.book_more{ float:right; margin-top: -5px; /*display:block; width:29px; height:5px; margin-top:8px; background:url(../images/news_more.jpg) no-repeat;*/}
+.book_more2{ margin-top:13px; margin-right:5px;}
+
+/* 2018 12 24 */
+.moreSource{
+  float:right; margin-top:6px; margin-right:8px;
+}
+
+.searchBox_blyun{margin:0px; padding:0px;  color:#243840;  overflow:hidden;}
+.searchBox_blyun *{margin:0px; padding:0px;}
+.searchBox_blyun ul{list-style-type:none;}
+.searchBox_blyun input{vertical-align:middle; font:12px  新宋体; color:#243840;}
+.searchBox_blyun a{color:#243840; text-decoration:none;}
+.searchBox_blyun a:hover{color:#dd1a00;text-decoration:none;}
+.searchBox_blyun .clearfix{overflow:hidden; zoom:1;}
+.searchBox_blyun .clear{clear:both; height:0px; font-size:0px; line-height:0px; overflow:hidden;}
+.searchBox_blyun .inner1_searchBox{}
+.searchBox_blyun .inner2_searchBox{ overflow:hidden;}
+.searchBox_blyun .sTab{ margin-left:5px;}
+.searchBox_blyun .sTab li{float:left; margin-right:20px; display:inline; font-size:14px;}
+.searchBox_blyun .sTab li.on a{font-weight:bold; color:#dd1a00;}
+.searchBox_blyun .sTab li.on a:hover{text-decoration:none;}
+.searchBox_blyun .sInput{ margin-top:10px; }
+.searchBox_blyun .sInput input{float:left; }
+.searchBox_blyun .stxt{width:327px; height:22px; line-height:22px; background:#fff; padding-left:10px; border:1px solid #d5d6d1;}
+.searchBox_blyun .cn{ display:inline;  margin:0 5px;}
+.searchBox_blyun .en{}
+.searchBox_blyun .sTip{float:left; height:28px; position:relative; margin:-1px 0px 0px 4px; line-height:14px; display:inline;}
+.searchBox_blyun .sTip td{height:27px;}
+.searchBox_blyun .sTip a{text-decoration:underline;}
+.searchBox_blyun .sLabel{ float:left; width:453px; margin-top:4px; margin-left:0px;}
+.searchBox_blyun .sLabel label{margin-right:5px; *margin-right:5px;}
+.searchBox_blyun .sLabel input{margin:0px 3px 3px 0px; *margin:0px 1px 3px 0px;}
+
+.searchBox_blyun p{margin-top:28px;color:#757575;}
+.searchBox_blyun p b{width:7px;height:8px;background-position:-52px top;margin:8px 8px 0px 0px;}
 </style>
