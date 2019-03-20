@@ -1,12 +1,12 @@
 <template>
-  <div id="visitor-page">
+  <div id="visitor-page" @keydown.13="login" v-loading="loading">
     <div id="visitor-page-body">
       <el-card class="box-card">
         <div slot="header" class="clearfix">
           <span style="font-size: 20px;">用户登录</span>
         </div>
         <div>
-          <div id="visitor-login">
+          <div id="visitor-login" >
             <el-form v-model="loginForm" label-width="80px">
               <el-form-item label="用户名">
                 <el-input v-model="loginForm.username" placeholder="请输入用户名"></el-input>
@@ -27,19 +27,51 @@
 <script>
 export default {
   name: 'Visitor',
+  props: {
+    'url': {
+      type: String
+    }
+  },
   data () {
     return {
       loginForm: {
         username: '',
         password: ''
-      }
+      },
+      loading: false
     }
   },
   methods: {
     login: function () {
-      console.log(this.loginForm)
       let self = this
-      this.$http.post()
+      if (self.loginForm.username.trim() === '' || self.loginForm.password.trim() === '') {
+        self.$message.error('用户名或密码不能为空')
+        return
+      }
+      this.loading = true
+      this.$http.post(self.url + 'login', self.$qs.stringify(self.loginForm))
+        .then(function (res) {
+          if (res.data.status === 0) {
+            // 0 超管 1 普通管理 2 用户
+            sessionStorage.setItem('user', self.loginForm.username)
+            if (self.loginForm.username.length > 20) {
+              sessionStorage.setItem('layer', '2')
+            } else {
+              sessionStorage.setItem('layer', res.data.msg)
+            }
+            self.$message.success('登录成功')
+            setTimeout(function () {
+              window.location.reload()
+            }, 1500)
+          } else if (res.data.status === 1) {
+            self.$message.error('用户名或密码错误')
+          }
+        })
+        .catch(function (err) {
+          self.$message.error('网络错误，请检查！')
+          console.log(err)
+          self.loading = false
+        })
     }
   }
 }

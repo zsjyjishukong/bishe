@@ -3,7 +3,7 @@
     <div class="top">
       <a href="/" class="logo"></a>
       <div class="znSeaarch">
-        <form action="/search.jspx" method="POST" target="_blank">
+        <form action="http://lib.hebiace.edu.cn/search.jspx" method="POST" target="_blank">
           <input type="text" name="q" class="znSeaarch_input">
           <input name="input2" value="搜索" type="submit" class="znSeaarch_btn">
         </form>
@@ -12,10 +12,10 @@
     <div class="menuIndex">
       <ul>
         <li class="on"><a href="/">首页</a></li>
-        <li><a href="/node/453.jspx">党建工作</a></li>
+        <li><a href="http://lib.hebiace.edu.cn/node/453.jspx">党建工作</a></li>
         <li><a href="http://wwt.hebiace.edu.cn/col8/col23/col2842/index.htm1?Modalid=6045" target="_blank">信息管理系</a></li>
         <li><a href="http://211.68.161.78:8080/node/540.jspx" target="_blank">志愿者协会</a></li>
-        <li><a href="/node/456.jspx">馆员之窗</a></li>
+        <li><a href="http://lib.hebiace.edu.cn/node/456.jspx">馆员之窗</a></li>
         <li><a href="http://211.68.161.66/NTRdrLogin.aspx" target="_blank">我的Lib</a></li>
         <li><a href="http://yc.hebiace.edu.cn:2048/login" target="_blank">远程访问</a></li>
       </ul>
@@ -28,12 +28,12 @@
           <a href="/"><p class="menu_tit">咨询台</p></a>
           <ul>
             <li><a href="http://211.68.161.78:8080/node/505.jspx" class="">常见问题</a></li>
-            <li><a href="/node/488.jspx" class="on">实时咨询</a></li>
-            <li><a href="/node/488.jspx" class="">微信平台</a></li>
+            <li><a href="http://lib.hebiace.edu.cn/node/488.jspx" class="on">实时咨询</a></li>
+            <li><a href="http://lib.hebiace.edu.cn/node/488.jspx" class="">微信平台</a></li>
             <li><a href="http://lib.hebiace.edu.cn/webs/service.jsp" class="">参考咨询</a></li>
-            <li><a href="/node/490.jspx" class="">定题服务</a></li>
-            <li><a href="/node/491.jspx" class="">信息推送</a></li>
-            <li><a href="/node/492.jspx" class="">馆长信箱</a></li>
+            <li><a href="http://lib.hebiace.edu.cn/node/490.jspx" class="">定题服务</a></li>
+            <li><a href="http://lib.hebiace.edu.cn/node/491.jspx" class="">信息推送</a></li>
+            <li><a href="http://lib.hebiace.edu.cn/node/492.jspx" class="">馆长信箱</a></li>
           </ul>
         </div>
         <!--------page_left finished---------->
@@ -42,15 +42,15 @@
           <div class="location">
             <p class="tit">
               <a href="/">首页</a>
-              <span>-</span><a href="/node/487.jspx">咨询台</a>
-              <span>-</span><a href="/node/488.jspx">微信平台</a>
+              <span>-</span><a href="http://lib.hebiace.edu.cn/node/487.jspx">咨询台</a>
+              <span>-</span><a href="http://lib.hebiace.edu.cn/node/488.jspx">微信平台</a>
             </p>
             <div class="clear"></div>
           </div>
           <div class="art">
-            <Student v-if="studentShow" v-bind:url="host" v-bind:user="cookie.user"></Student>
-            <Admin v-if="adminShow" :layer="layer" :url="host"></Admin>
-            <Visitor v-if="visitorShow"></Visitor>
+            <Student v-if="studentShow" v-bind:url="host" v-bind:user="user"></Student>
+            <Admin v-if="adminShow" :url="host"></Admin>
+            <Visitor v-if="visitorShow" v-bind:url="host"></Visitor>
           </div>
           <div class="clear"></div>
         </div>
@@ -79,59 +79,42 @@ export default {
   },
   data () {
     return {
-      host: 'http://192.168.0.102:7777/',
-      cookie: {},
+      host: 'http://192.168.232.105:7777/',
       studentShow: false,
       adminShow: false,
-      visitorShow: true,
-      username: '',
-      password: '',
-      login11: {},
-      login22: {display: 'none'},
-      peopleNumber: 20000,
-      layer: 0,
+      visitorShow: false,
       user: ''
     }
   },
   methods: {
-    cookieToObj: function (cookie) {
-      let cookieArr = cookie.split(';')
-      for (let aCookie of cookieArr) {
-        let aCookieArr = aCookie.split('=')
-        this.cookie[aCookieArr[0].trim()] = aCookieArr[1]
-        if (aCookieArr[0] === 'user') {
-          this.user = aCookieArr[1]
-        }
-      }
+    showAdmin: function () {
+      this.adminShow = true
+      this.studentShow = false
+      this.visitorShow = false
     },
-    userlogin: function () {
-      this.$http.post()
+    showStudent: function () {
+      this.adminShow = false
+      this.studentShow = true
+      this.visitorShow = false
+    },
+    showVisitor: function () {
+      this.adminShow = false
+      this.studentShow = false
+      this.visitorShow = true
     }
   },
   mounted: function () {
-    let cookie = document.cookie
-    let self = this
-    this.cookieToObj(cookie)
-    document.cookie = 'user=20153320131'
-    if (this.cookie.user !== undefined) {
-      this.$http.get(this.host + 'login?username=' + this.cookie.user)
-        .then(function (response) {
-          let layer = response.data.customer_type
-          if (layer === 0) { // 0普通用户
-            self.studentShow = true
-            self.visitorShow = false
-          } else if (layer === 1 || layer === 2) { // 1超级管理 2普通管理
-            self.visitorShow = false
-            self.adminShow = true
-            self.layer = layer
-          }
-        })
-        // eslint-disable-next-line
-        .catch(function (err) {
-          self.$message.error('出错了')
-        })
+    if (sessionStorage.getItem('user')) {
+      // 0 超管 1 普通管理 2 用户
+      this.user = sessionStorage.getItem('user')
+      // eslint-disable-next-line
+      if (sessionStorage.getItem('layer') == 0 || sessionStorage.getItem('layer') == 1) {
+        this.showAdmin()
+      } else {
+        this.showStudent()
+      }
     } else {
-      this.visitorShow = true
+      this.showVisitor()
     }
   }
 }
@@ -139,7 +122,8 @@ export default {
 
 <style scoped>
 #page{
-  height: 100vh;
+  /*height: 100vh;*/
+  padding-bottom: 10px;
   font:12px/1.5 宋体, Arial, Helvetica, sans-serif; color:#000;
   background:url(../../assets/body_bg.png) repeat-x #e6e6e6;
 }

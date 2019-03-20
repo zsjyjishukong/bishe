@@ -16,14 +16,28 @@
       </div>
     </div>
     <div class="new-chat">
-      <textarea type="text" placeholder="请详细描述你的问题" id="new-chat-input" v-model="newChat" @keyup.enter="send"></textarea>
+      <textarea type="text" placeholder="请详细描述你的问题" id="new-chat-input" v-model.lazy="newChat" @keyup.enter="send"></textarea>
       <button class="send" @click="send">
         发送
       </button>
-      <button class="send">
-        我的
-      </button>
+      <el-badge :value="unread" :max="9" :hidden="parseInt(unread) === 0">
+        <button class="send" @click="showMe()">
+          我的
+        </button>
+      </el-badge>
     </div>
+    <el-dialog title="我的提问" :visible.sync="meShow">
+      <div>
+        <el-table :data="myQuestion" height="350">
+          <el-table-column property="date" label="日期" width="150" sortable></el-table-column>
+          <el-table-column property="question" label="问题" width="200"></el-table-column>
+          <el-table-column property="answer" label="回答"></el-table-column>
+        </el-table>
+      </div>
+      <div style="text-align: center; margin-top: 10px;">
+        <el-button type="danger" @click="logout">退出登录</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -41,7 +55,10 @@ export default {
   data () {
     return {
       chat: [],
-      newChat: ''
+      newChat: '',
+      meShow: false,
+      myQuestion: [],
+      unread: 0
     }
   },
   methods: {
@@ -59,7 +76,7 @@ export default {
       })
       self.update()
       this.newChat = ''
-      this.$http.post(self.url + 'answer', self.$qs.stringify({question: newChat, username: self.user}))
+      this.$http.post(self.url + 'answer', self.$qs.stringify({question: newChat}))
         .then(function (response) {
           console.log(response.data)
           let chatBody = response.data.msg
@@ -86,9 +103,61 @@ export default {
           } else {
             clearInterval(timer)
           }
-        }, 1000)
+        }, 10)
       })
+    },
+    showMe: function () {
+      let self = this
+      this.meShow = true
+      this.$http.get(self.url + 'myquestion')
+        .then(function (response) {
+          if (response.data.status === 0) {
+            self.myQuestion = []
+            for (let item of response.data.msg) {
+              let tmp = {date: item.newstime, answer: item.theanswer, question: item.question}
+              self.myQuestion.push(tmp)
+            }
+            self.unread = 0
+          }
+        })
+        .catch(function (err) {
+          self.$message.error('网络错误')
+          console.log(err)
+        })
+    },
+    logout: function () {
+      let self = this
+      this.$http.post(self.url + 'del_cookie')
+        .then(function (response) {
+          if (response.data.status === 0) {
+            sessionStorage.removeItem('user')
+            sessionStorage.removeItem('layer')
+            self.$message.success('退出成功')
+            setTimeout(function () {
+              window.location.reload()
+            }, 1500)
+          }
+        })
+        .catch(function (err) {
+          self.$message.error('网络错误')
+          console.log(err)
+        })
     }
+  },
+  mounted: function () {
+    let self = this
+    this.$http.get(self.url + 'number')
+      .then(function (response) {
+        if (response.data.status === 0) {
+          self.unread = response.data.msg
+        } else {
+          self.$message.error('获取用户未读信息失败')
+        }
+      })
+      .catch(function (err) {
+        self.$message.error('网络错误')
+        console.log(err)
+      })
   }
 }
 </script>
@@ -144,6 +213,7 @@ export default {
     -moz-border-radius: 25px;
     border-radius: 25px;
     text-align: center;
+    text-align: -webkit-center;
     line-height: 50px;
     color: white;
     font-size: 20px;
@@ -177,6 +247,7 @@ export default {
     -moz-border-radius: 25px;
     border-radius: 25px;
     text-align: center;
+    text-align: -webkit-center;
     line-height: 50px;
     color: white;
     font-size: 20px;
