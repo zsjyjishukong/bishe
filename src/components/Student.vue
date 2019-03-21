@@ -75,7 +75,8 @@ export default {
         newChat = e.target.innerHTML
       } else {
         newChat = this.newChat
-        let verifyChat = newChat.replace(/ /g, '')
+        // eslint-disable-next-line
+        let verifyChat = newChat.replace(/[\s|\r|\n|\.?|\??|\`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\_|\+|\<|\>|\?|\:|\"|\{|\}|\,|\.|/|\;|\'|\[|\\|\]|\·|\、|\《|\》]/g, '')
         if (verifyChat === '') {
           this.$message.error('不可以发送空白消息')
           return false
