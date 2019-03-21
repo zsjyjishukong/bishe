@@ -76,7 +76,6 @@ export default {
       } else {
         newChat = this.newChat
         let verifyChat = newChat.replace(/ /g, '')
-        self.$message.success(verifyChat)
         if (verifyChat === '') {
           this.$message.error('不可以发送空白消息')
           return false
