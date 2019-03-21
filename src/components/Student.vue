@@ -70,7 +70,7 @@ export default {
         return false
       }
       this.chat.push({
-        from: this.user,
+        from: '问',
         isLeft: false,
         chatBody: newChat
       })
