@@ -8,6 +8,11 @@
         <div class="a-chat-body-father">
           <div :class="data.isLeft?'a-chat-body a-chat-body-left':'a-chat-body a-chat-body-right'">
             {{data.chatBody}}
+            <div v-if="data.isGuess">
+              <a href="#" class="guess" @click="send($event,true)" v-for="(item,idx) in data.guess" v-bind:key="idx">
+                {{item.question}}
+              </a>
+            </div>
           </div>
         </div>
         <div class="a-chat-img-right" v-bind:hidden="data.isLeft">
@@ -62,12 +67,18 @@ export default {
     }
   },
   methods: {
-    send: function () {
+    send: function (e, isGuess) {
+      e.preventDefault()
       let self = this
-      let newChat = this.newChat
-      if (newChat === '') {
-        this.$message.error('不可以发送空白消息')
-        return false
+      let newChat = ''
+      if (isGuess === true) {
+        newChat = e.target.innerHTML
+      } else {
+        newChat = this.newChat
+        if (newChat === '') {
+          this.$message.error('不可以发送空白消息')
+          return false
+        }
       }
       this.chat.push({
         from: '问',
@@ -78,17 +89,39 @@ export default {
       this.newChat = ''
       this.$http.post(self.url + 'answer', self.$qs.stringify({question: newChat}))
         .then(function (response) {
-          let chatBody = response.data.msg
-          let from = '智能'
-          let chat = {
-            chatBody: chatBody,
-            from: from,
-            isLeft: 'true'
+          if (response.data.status === 0) {
+            // msg_code 0 正确回复  1 采妮想问  2  图灵回复
+            let chatBody = ''
+            let fromUser = ''
+            let isGuess = false
+            let guess = []
+            if (response.data.msg_code === 0) {
+              chatBody = response.data.msg
+              fromUser = '智'
+            } else if (response.data.msg_code === 1) {
+              isGuess = true
+              chatBody = '猜你想问：'
+              guess = response.data.msg
+              fromUser = '智'
+            } else if (response.data.msg_code === 2) {
+              chatBody = response.data.msg
+              fromUser = '图'
+            }
+            let chat = {
+              chatBody: chatBody,
+              from: fromUser,
+              isLeft: 'true',
+              isGuess: isGuess,
+              guess: guess
+            }
+            self.chat.push(chat)
+            self.update()
+          } else {
+            self.$message.error('未知错误')
           }
-          self.chat.push(chat)
-          self.update()
         })
         .catch(function (err) {
+          self.$message.error('发送消息失败，请检查网络')
           console.log(err)
         })
     },
@@ -120,7 +153,7 @@ export default {
           }
         })
         .catch(function (err) {
-          self.$message.error('网络错误')
+          self.$message.error('查询用户问题失败，请检查网络')
           console.log(err)
         })
     },
@@ -138,7 +171,7 @@ export default {
           }
         })
         .catch(function (err) {
-          self.$message.error('网络错误')
+          self.$message.error('退出登录失败，请检查网络')
           console.log(err)
         })
     }
@@ -150,11 +183,11 @@ export default {
         if (response.data.status === 0) {
           self.unread = response.data.msg
         } else {
-          self.$message.error('获取用户未读信息失败')
+          self.$message.error('获取用户未读信息失败 未知错误')
         }
       })
       .catch(function (err) {
-        self.$message.error('网络错误')
+        self.$message.error('获取用户未读信息失败，请检查网络')
         console.log(err)
       })
   }
@@ -257,5 +290,11 @@ export default {
     -moz-border-radius: 5px;
     border-radius: 5px;
     padding: 10px 0;
+  }
+  .guess{
+    display: block;
+    /*text-decoration-line: none;*/
+    color: #eee;
+    line-height: 25px;
   }
 </style>

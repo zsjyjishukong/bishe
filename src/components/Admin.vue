@@ -143,6 +143,7 @@ export default {
           }
         })
         .catch(function (err) {
+          self.$message.error('回答失败，请检查网络')
           console.log(err)
         })
     },
@@ -158,8 +159,9 @@ export default {
             self.questionSet.push(i)
           }
         })
-        .catch(function () {
-          console.log('出错了')
+        .catch(function (err) {
+          self.$message.error('查询问题出错，请检查网络')
+          console.log(err)
         })
     },
     queryAdmin: function () {
@@ -175,6 +177,7 @@ export default {
           }
         })
         .catch(function (err) {
+          self.$message.error('查询管理员失败，请检查网络')
           console.log(err)
         })
     },
@@ -193,7 +196,7 @@ export default {
           }
         })
         .catch(function (err) {
-          self.$message.error('网络错误')
+          self.$message.error('添加管理员失败，请检查网络')
           console.log(err)
         })
     },
@@ -210,7 +213,7 @@ export default {
           }
         })
         .catch(function (err) {
-          self.$message.error('网络错误')
+          self.$message.error('删除管理员失败，请检查网络')
           console.log(err)
         })
     },
@@ -251,7 +254,7 @@ export default {
           }
         })
         .catch(function (err) {
-          self.$message.error('网络错误')
+          self.$message.error('删除问题失败，请检查网络')
           console.log(err)
         })
     },
@@ -260,7 +263,6 @@ export default {
       for (let i in val) {
         this.multipleSelection.push(val[i].id)
       }
-      console.log(this.multipleSelection)
     },
     logout: function () {
       let self = this
@@ -276,7 +278,7 @@ export default {
           }
         })
         .catch(function (err) {
-          self.$message.error('网络错误')
+          self.$message.error('退出登录失败，请检查网络')
           console.log(err)
         })
     }
