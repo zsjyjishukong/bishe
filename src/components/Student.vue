@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="new-chat">
-      <textarea type="text" placeholder="请详细描述你的问题" id="new-chat-input" v-model.lazy="newChat" @keyup.enter="send"></textarea>
+      <textarea type="text" placeholder="请详细描述你的问题" id="new-chat-input" v-model.trim="newChat" @keyup.enter="send"></textarea>
       <button class="send" @click="send">
         发送
       </button>
@@ -64,7 +64,7 @@ export default {
   methods: {
     send: function () {
       let self = this
-      let newChat = this.newChat.trim()
+      let newChat = this.newChat
       if (newChat === '') {
         this.$message.error('不可以发送空白消息')
         return false
@@ -78,7 +78,6 @@ export default {
       this.newChat = ''
       this.$http.post(self.url + 'answer', self.$qs.stringify({question: newChat}))
         .then(function (response) {
-          console.log(response.data)
           let chatBody = response.data.msg
           let from = '智能'
           let chat = {
