@@ -77,7 +77,7 @@ export default {
   },
   data () {
     return {
-      host: 'http://192.168.232.105:7777/',
+      host: 'http://192.168.144.1:7777/',
       studentShow: false,
       adminShow: false,
       visitorShow: false,
