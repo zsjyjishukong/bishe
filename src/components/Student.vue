@@ -98,7 +98,7 @@ export default {
       let self = this
       let newChat = ''
       if (isGuess === true) {
-        newChat = e.target.innerHTML
+        newChat = e.target.innerHTML.trim()
       } else {
         newChat = this.newChat
         // eslint-disable-next-line
@@ -125,7 +125,7 @@ export default {
       this.$http.post(self.url + 'answer', self.$qs.stringify({question: newChat}))
         .then(function (response) {
           if (response.data.status === 0) {
-            // msg_code 0 正常回复  1 采妮想问  2  图灵回复  3 查询图书
+            // msg_code 0 正常回复  1 猜你想问  2  图灵回复  3 查询图书
             let chatBody = ''
             let fromUser = ''
             let msgType = response.data.msg_code
