@@ -65,6 +65,7 @@ export default {
             }, 1500)
           } else if (res.data.status === 1) {
             self.$message.error('用户名或密码错误')
+            self.loading = false
           }
         })
         .catch(function (err) {

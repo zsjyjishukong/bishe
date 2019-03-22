@@ -8,10 +8,36 @@
         <div class="a-chat-body-father">
           <div :class="data.isLeft?'a-chat-body a-chat-body-left':'a-chat-body a-chat-body-right'">
             {{data.chatBody}}
-            <div v-if="data.isGuess">
+            <!--猜你想问-->
+            <div v-if="data.msgType === 1">
               <a href="#" class="guess" @click="send($event,true)" v-for="(item,idx) in data.guess" v-bind:key="idx">
                 {{item.question}}
               </a>
+            </div>
+            <!--查询图书-->
+            <div v-if="data.msgType === 3">
+              <table class="book" cellpadding="0" cellspacing="0">
+                <thead>
+                <th>书名</th>
+                <th>索书号</th>
+                <th>出版社</th>
+                <th>阅览室</th>
+                <th>在馆数量</th>
+                <th>位置详情</th>
+                </thead>
+                <tbody>
+                  <tr v-for="(item, idx) in data.book" :key="idx">
+                    <td>{{item.bookName}}</td>
+                    <td>{{item.callCode}}</td>
+                    <td>{{item.press}}</td>
+                    <td>{{item.readingRoom}}</td>
+                    <td>{{item.libNum}}</td>
+                    <td>
+                      <a :href="item.href" target="_blank">点击查看</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -99,11 +125,12 @@ export default {
       this.$http.post(self.url + 'answer', self.$qs.stringify({question: newChat}))
         .then(function (response) {
           if (response.data.status === 0) {
-            // msg_code 0 正确回复  1 采妮想问  2  图灵回复
+            // msg_code 0 正常回复  1 采妮想问  2  图灵回复  3 查询图书
             let chatBody = ''
             let fromUser = ''
-            let isGuess = false
+            let msgType = response.data.msg_code
             let guess = []
+            let book = []
             if (response.data.msg_code === 0) {
               chatBody = response.data.msg
               fromUser = '智'
@@ -115,13 +142,40 @@ export default {
             } else if (response.data.msg_code === 2) {
               chatBody = response.data.msg
               fromUser = '图'
+            } else if (response.data.msg_code === 3) { // 查询图书信息
+              fromUser = '智'
+              if (response.data.msg.length === 0) {
+                msgType = 0
+                chatBody = '未找到相关藏书'
+              } else {
+                chatBody = '为您找到以下图书馆藏信息：'
+                for (let item of response.data.msg) {
+                  let bookName = item.book_name.split('\'')[1]
+                  let callCode = item.call_code.split('\'')[1]
+                  let libNum = item.lib_num
+                  let href = item.location.split('\\\'')[1]
+                  let press = item.press.split('\'')[1]
+                  let readingRoom = item.reading_room.split('\'')[1]
+                  let tmp = {
+                    bookName,
+                    callCode,
+                    libNum,
+                    href,
+                    press,
+                    readingRoom
+                  }
+                  book.push(tmp)
+                }
+                console.log(book)
+              }
             }
             let chat = {
-              chatBody: chatBody,
+              chatBody,
               from: fromUser,
               isLeft: 'true',
-              isGuess: isGuess,
-              guess: guess
+              msgType,
+              guess,
+              book
             }
             self.chat.push(chat)
             self.update()
@@ -305,5 +359,29 @@ export default {
     /*text-decoration-line: none;*/
     color: #eee;
     line-height: 25px;
+  }
+  .book{
+    margin-top: 10px;
+    margin-bottom: 5px;
+    text-align: center;
+  }
+  .book th {
+    font-size: 17px;
+    border-bottom: 1px solid #ebeef5;
+    border-top: 1px solid #ebeef5;
+    padding: 5px ;
+  }
+  .book td{
+    border-bottom: 1px solid #ebeef5;
+    padding: 5px 5px;
+  }
+  .book td a{
+    text-decoration-line: none;
+  }
+  .book td a:link{
+    color: #fff;
+  }
+  .book td a:visited{
+    color: #ddd;
   }
 </style>
