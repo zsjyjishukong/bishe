@@ -59,7 +59,7 @@
     </div>
     <el-dialog title="我的提问" :visible.sync="meShow">
       <div>
-        <el-table :data="myQuestion" height="350">
+        <el-table :data="myQuestion" height="350" :row-class-name="tableRowClassName">
           <el-table-column property="date" label="日期" width="150" sortable></el-table-column>
           <el-table-column property="question" label="问题" width="200"></el-table-column>
           <el-table-column property="answer" label="回答"></el-table-column>
@@ -93,6 +93,14 @@ export default {
     }
   },
   methods: {
+    tableRowClassName: function ({row, rowIndex}) {
+      console.log(row.question, parseInt(row.answerState) === 0)
+      if (parseInt(row.answerState) === 0) {
+        return 'success-row'
+      } else {
+        return ''
+      }
+    },
     send: function (e, isGuess) {
       e.preventDefault()
       let self = this
@@ -209,8 +217,8 @@ export default {
           if (response.data.status === 0) {
             self.myQuestion = []
             for (let item of response.data.msg) {
-              let tmp = {date: item.newstime, answer: item.theanswer, question: item.question}
-              self.myQuestion.push(tmp)
+              let tmp = {date: item.newstime, answer: item.theanswer, question: item.question, answerState: item.answerstate}
+              self.myQuestion.unshift(tmp)
             }
             self.unread = 0
           }
@@ -383,5 +391,9 @@ export default {
   }
   .book td a:visited{
     color: #ddd;
+  }
+  .el-table .success-row{
+    background: #f0f9eb;
+    color: #fff;
   }
 </style>

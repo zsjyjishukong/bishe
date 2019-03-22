@@ -11,5 +11,7 @@ export default {
 </script>
 
 <style>
-
+  .el-table .success-row{
+    background: oldlace;
+  }
 </style>
