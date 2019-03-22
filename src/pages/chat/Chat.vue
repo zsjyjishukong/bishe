@@ -59,8 +59,6 @@
       </div>
       <div class="footer">
         <p>河北建筑工程学院图书馆  email：hebiace_xxb@163.com  电话：0313-4187858 <br>
-          总访问量：<font>2874948</font>
-          &nbsp;&nbsp;今日访问量：<span class="span3">250</span></p>
       </div>
     </div>
   </div>
