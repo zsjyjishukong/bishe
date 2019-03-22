@@ -95,7 +95,7 @@ export default {
   methods: {
     tableRowClassName: function ({row, rowIndex}) {
       console.log(row.question, parseInt(row.answerState) === 0)
-      if (parseInt(row.answerState) === 0) {
+      if (parseInt(row.answerState) === 1) {
         return 'success-row'
       } else {
         return ''
