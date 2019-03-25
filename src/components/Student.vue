@@ -47,7 +47,7 @@
       </div>
     </div>
     <div class="new-chat">
-      <textarea type="text" placeholder="请详细描述你的问题" id="new-chat-input" v-model.trim="newChat" @keyup.enter="send"></textarea>
+      <textarea type="text" placeholder="请详细描述你的问题，查询馆藏可以使用书名号，如《平凡的世界》" id="new-chat-input" v-model.trim="newChat" @keyup.enter="send"></textarea>
       <button class="send" @click="send">
         发送
       </button>
