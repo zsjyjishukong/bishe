@@ -1,7 +1,7 @@
 <template>
   <div id="page">
     <div class="top">
-      <a href="/" class="logo"></a>
+      <a href="http://lib.hebiace.edu.cn" class="logo"></a>
       <div class="znSeaarch">
         <form action="http://lib.hebiace.edu.cn/search.jspx" method="POST" target="_blank">
           <input type="text" name="q" class="znSeaarch_input">
@@ -11,7 +11,7 @@
     </div>
     <div class="menuIndex">
       <ul>
-        <li class="on"><a href="/">首页</a></li>
+        <li class="on"><a href="http://lib.hebiace.edu.cn">首页</a></li>
         <li><a href="http://lib.hebiace.edu.cn/node/453.jspx">党建工作</a></li>
         <li><a href="http://wwt.hebiace.edu.cn/col8/col23/col2842/index.htm1?Modalid=6045" target="_blank">信息管理系</a></li>
         <li><a href="http://211.68.161.78:8080/node/540.jspx" target="_blank">志愿者协会</a></li>
@@ -25,15 +25,13 @@
       <div class="content_page">
         <!--------page_left---------->
         <div class="menu">
-          <a href="/"><p class="menu_tit">咨询台</p></a>
+          <a href="http://lib.hebiace.edu.cn"><p class="menu_tit">参考咨询</p></a>
           <ul>
-            <li><a href="http://211.68.161.78:8080/node/505.jspx" class="">常见问题</a></li>
-            <li><a href="http://lib.hebiace.edu.cn/node/488.jspx" class="on">实时咨询</a></li>
-            <li><a href="http://lib.hebiace.edu.cn/node/488.jspx" class="">微信平台</a></li>
-            <li><a href="http://lib.hebiace.edu.cn/webs/service.jsp" class="">参考咨询</a></li>
-            <li><a href="http://lib.hebiace.edu.cn/node/490.jspx" class="">定题服务</a></li>
-            <li><a href="http://lib.hebiace.edu.cn/node/491.jspx" class="">信息推送</a></li>
-            <li><a href="http://lib.hebiace.edu.cn/node/492.jspx" class="">馆长信箱</a></li>
+            <li><a href="http://lib.hebiace.edu.cn/node/556.jspx" class="">QQ咨询</a></li>
+            <li><a href="http://lib.hebiace.edu.cn/node/557.jspx" class="">Email咨询</a></li>
+            <li><a href="http://lib.hebiace.edu.cn/node/558.jspx" class="">电话咨询</a></li>
+            <li><a href="http://lib.hebiace.edu.cn/node/560.jspx" class="">留言板</a></li>
+            <li><a href="#" class="on">智能问答</a></li>
           </ul>
         </div>
         <!--------page_left finished---------->
@@ -41,9 +39,9 @@
         <div class="page_right">
           <div class="location">
             <p class="tit">
-              <a href="/">首页</a>
-              <span>-</span><a href="http://lib.hebiace.edu.cn/node/487.jspx">咨询台</a>
-              <span>-</span><a href="http://lib.hebiace.edu.cn/node/488.jspx">微信平台</a>
+              <a href="http://lib.hebiace.edu.cn">首页</a>
+              <span>-</span><a href="http://lib.hebiace.edu.cn/node/489.jspx">参考咨询</a>
+              <span>-</span><a href="#">智能问答</a>
             </p>
             <div class="clear"></div>
           </div>
@@ -58,7 +56,7 @@
         <div class="clear"></div>
       </div>
       <div class="footer">
-        <p>河北建筑工程学院图书馆  email：hebiace_xxb@163.com  电话：0313-4187858 <br>
+        <p>河北建筑工程学院图书馆  email：hebiace_xxb@163.com  电话：0313-4187858 </p><br>
       </div>
     </div>
   </div>
